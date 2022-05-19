@@ -46,6 +46,44 @@ const questions = [
 /*************************/
 /* Contenu du DOM chargé */
 /*************************/
+let score = 0;
 document.addEventListener("DOMContentLoaded", () => {
-  // A FAIRE: Compléte le code pour de faire fonctionner le quizz, pour plus d'informations consulte le sujet
+  showQuestion(0);
 });
+
+function showQuestion(questionIndex) {
+  const questionElement = document.getElementById('question');
+  const answersElement = document.getElementById('answers');
+  const scoreElement = document.getElementById('score');
+
+  const item = questions[questionIndex]
+  answersElement.innerHTML = ''
+  questionElement.innerText = item.question;
+
+  for (const answerIndex in item.answers) {
+    const answer = item.answers[answerIndex];
+    const liElement = document.createElement('li');
+
+    liElement.classList.add('answer')
+    liElement.innerText = answer;
+    liElement.addEventListener('click', () => {
+      if (answerIndex == item.correctAnswerIndex) {
+        score = score + 1;
+        scoreElement.innerText = score;
+      }
+
+      if (questionIndex < questions.length - 1) {
+        showQuestion(questionIndex + 1);
+
+      } else {
+        questionElement.innerHTML = 'Vous avez fini! Bien joué!'
+        answersElement.innerHTML = ''
+
+      }
+
+
+    });
+
+    answersElement.appendChild(liElement);
+  }
+}
